@@ -1,0 +1,1 @@
+function sayHi(){alert("hello, git!")}
