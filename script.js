@@ -1,3 +1,3 @@
 function sayHi() {
-	alert("Helo, Git!")
+	alert("Helo, Git!");
 }
