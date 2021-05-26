@@ -18,8 +18,3 @@ console.log(sum2(2,5));
 </body>
 </html>
 
-
-
-
-
-
