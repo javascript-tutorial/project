@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>Решение первой задачи</h1>
+<h1> Решение первой задачи</h1>
 function sum1(a, b){
 return a + b;
 }
@@ -15,11 +15,10 @@ function sum2(c, d){
 return c + d;
 }
 console.log(sum2(2,5));
+
+<h2> Решение первой задачи</h2>
 </body>
 </html>
-
-
-
 
 
 
