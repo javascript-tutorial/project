@@ -130,17 +130,7 @@ paths:
           description: Список документов, которые клиент приложил
           items:
             $ref: '#/components/schemas/DocumentUser'
-    timeExtend:
-      title: timeExtend
-      type: object
-      properties:
-        client_id:
-          type: string
-          description: 'id клиента из бд'
-        request_id:
-          type: string
-        new_date:
-          type: string
+
     ClientInfo:
       title: clientInfo
       type: object
