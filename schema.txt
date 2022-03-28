@@ -14,41 +14,6 @@ tags:
   - name: DocCollectApp
     description: Default Api Controller
 paths:
-  /app/request/{uuid}/:
-    get:
-      tags:
-        - DocCollectApp
-      summary: Получение данных запроса документов
-      description: Получение данных запроса документов
-      operationId: docCollectInfoGet
-      parameters:
-        - name: uuid
-          in: path
-          description: Токен из ссылки
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Успешный запрос
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocCollectInfo'
-        '400':
-          description: Запрос по токену не найден
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
   /app/request/:
     post:
       tags:
@@ -74,28 +39,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /app/timeextend/:
-    post:
-      tags:
-        - DocCollectApp
-      summary: Отправка запроса на продление срока
-      operationId: timeExtend
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/timeExtend'
-      responses:
-        '200':
-          description: Успешный запрос
-        '500':
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-components:
+ components:
   schemas:
     Error:
       title: Error
