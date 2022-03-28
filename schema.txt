@@ -1,0 +1,243 @@
+openapi: 3.0.3
+info:
+  title: doccollect-app
+  description: Сервис запроса документов от клиента
+  contact: { }
+  license:
+    name: Rosbank
+    url: 'http://rosbank.ru'
+  version: 1.0.0
+servers:
+  - url: 'https://localhost:443'
+    description: Inferred Url
+tags:
+  - name: DocCollectApp
+    description: Default Api Controller
+paths:
+  /app/request/{uuid}/:
+    get:
+      tags:
+        - DocCollectApp
+      summary: Получение данных запроса документов
+      description: Получение данных запроса документов
+      operationId: docCollectInfoGet
+      parameters:
+        - name: uuid
+          in: path
+          description: Токен из ссылки
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocCollectInfo'
+        '400':
+          description: Запрос по токену не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /app/request/:
+    post:
+      tags:
+        - DocCollectApp
+      summary: Создание запроса документов
+      operationId: docCollectInfoPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocCollectInfo'
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '500':
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /app/timeextend/:
+    post:
+      tags:
+        - DocCollectApp
+      summary: Отправка запроса на продление срока
+      operationId: timeExtend
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/timeExtend'
+      responses:
+        '200':
+          description: Успешный запрос
+        '500':
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      title: Error
+      type: object
+      properties:
+        id:
+          type: string
+          description: идентификатор ошибки
+        message:
+          type: string
+          description: сообщение об ошибке
+        type:
+          type: string
+          enum:
+            - REQUEST_NOT_FOUND
+            - EMPTY_STATEMENT_ERROR
+            - FORBIDDEN
+            - IMPORT_DOCUMENT_ERROR
+            - INVALID_CREDENTIALS
+            - REVERT_DOCUMENT_ERROR
+            - UNEXPECTED
+            - VALIDATION_ERROR
+    DocCollectInfo:
+      title: DocCollectInfo
+      type: object
+      description: Данные по запросу документов для бэка
+      properties:
+        callback_url:
+          type: string
+        uuid:
+          type: string
+        request_id:
+          type: string
+        stage:
+          type: string
+          enum:
+            - new
+            - rework
+            - sent
+            - final
+          description: Статус запроса
+        stage_name:
+          type: string
+          description: Имя статуса запроса для отображения на фронте
+        stage_option:
+          type: string
+          description: Для фронта - хороший, нейтральный или плохой статус(разные картинки)
+        stage_comment:
+          type: string
+          description: Подробная информация по статусу - видит клиент
+        limit_date:
+          type: string
+          description: Предельный срок запроса
+          format: date-time
+        new_date:
+          type: string
+          description: Запрошенная клиентом дата запроса
+          format: date-time
+        extended:
+          type: string
+          description: Признак возможности продлить срок запроса
+        document_list:
+          type: array
+          description: Список документов, запрашиваемых у клиента
+          items:
+            $ref: '#/components/schemas/Document'
+        client_info_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientInfo'
+    Token:
+      title: token
+      type: object
+      properties:
+        token:
+          type: string
+    SentDocCollectInfo:
+      title: sentDocCollectInfo
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: id клиента из бд
+        request_id:
+          type: string
+        document_list:
+          type: array
+          description: Список документов, которые клиент приложил
+          items:
+            $ref: '#/components/schemas/DocumentUser'
+    timeExtend:
+      title: timeExtend
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: 'id клиента из бд'
+        request_id:
+          type: string
+        new_date:
+          type: string
+    ClientInfo:
+      title: clientInfo
+      type: object
+      description: 'информация о клиенте'
+      properties:
+        param_name:
+          type: string
+          description: 'Название параметра'
+        param_value:
+          type: string
+          description: 'Значение параметра'
+    Document:
+      title: documentInfo
+      type: object
+      description: 'информация о файле'
+      properties:
+        doc_id:
+          type: string
+          description: 'id документа в системе-источнике'
+        doc_name:
+          type: string
+          description: 'Имя документа'
+        mandatory:
+          type: string
+          description: 'Обязательность документа'
+        comment:
+          type: string
+          description: 'Расшифровка имени - какую часть документа нужно приложить'
+    DocumentUser:
+      type: object
+      description: 'Документы пользователя'
+      properties:
+        doc_name:
+          type: string
+          description: 'Имя документа, который прислала система-источник'
+        comment:
+          type: string
+          description: 'Комментарий клиента к документу'
+        elib_id:
+          type: array
+          items:
+            properties:
+              elib_id:
+                type: string
