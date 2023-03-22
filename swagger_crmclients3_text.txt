@@ -1,0 +1,583 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ProPortal API",
+        "description": "ProPortal API",
+        "contact": {
+            "name": "Sergey Pechenyuk",
+            "email": "sergey.pechenyuk@rosbank.ru"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://testproportal.testproportal.trosbank.trus.tsocgen/",
+            "description": "Sandbox"
+        },
+        {
+            "url": "https://proportal.rosbank.rus.socgen/",
+            "description": "Production"
+        }
+    ],
+    "paths": {
+       
+        "/pro/api/crmclient3/get": {
+            "get": {
+                "tags": [
+                    "Siebel"
+                ],
+                "summary": "Поиск клиентов",
+                "description": "Ищет клиенто во view - view_crm_client3",
+                "operationId": "b853c38b84764ad34bc283a93b15f36c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "client_id": {
+                                        "description": "ID проспекта в портале",
+                                        "type": "string",
+                                        "example": "5461154"
+                                    },
+                                    "fclient": {
+                                        "description": "BisBranch + BisId",
+                                        "type": "string",
+                                        "example": "R19001002"
+                                    },
+                                    "inn": {
+                                        "description": "ИНН",
+                                        "type": "string",
+                                        "example": "1234567894"
+                                    },
+                                    "ogrn": {
+                                        "description": "ОГРН",
+                                        "type": "string",
+                                        "example": "1234567890123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Результаты поиска",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "properties": {
+                                            "ADRES_FACT": {
+                                                "type": "string"
+                                            },
+                                            "ADRES_POCHT": {
+                                                "type": "string"
+                                            },
+                                            "ADRES_REG": {
+                                                "type": "string"
+                                            },
+                                            "CLIENT_ID": {
+                                                "type": "string"
+                                            },
+                                            "CODE_KPP": {
+                                                "type": "string"
+                                            },
+                                            "CODE_OKATO": {
+                                                "type": "string"
+                                            },
+                                            "CODE_OKFS": {
+                                                "type": "string"
+                                            },
+                                            "CODE_OKOGU": {
+                                                "type": "string"
+                                            },
+                                            "CODE_OKOPF": {
+                                                "type": "string"
+                                            },
+                                            "CODE_OKPO": {
+                                                "type": "string"
+                                            },
+                                            "CODE_OKTMO": {
+                                                "type": "string"
+                                            },
+                                            "CODE_SPARK": {
+                                                "type": "string"
+                                            },
+                                            "CONTACT_EMAIL": {
+                                                "type": "string"
+                                            },
+                                            "CONTACT_PHONES_ARRAY": {
+                                                "type": "string"
+                                            },
+                                            "CONTACT_WEBSITE": {
+                                                "type": "string"
+                                            },
+                                            "CURRENT_BANK": {
+                                                "type": "string"
+                                            },
+                                            "DATA_PERVAYA_VSTRECHA": {
+                                                "type": "string"
+                                            },
+                                            "DATA_PERVYI_ZVONOK": {
+                                                "type": "string"
+                                            },
+                                            "DATE_REG_YYYYMMDD": {
+                                                "type": "string"
+                                            },
+                                            "FCLIENT": {
+                                                "type": "string"
+                                            },
+                                            "FULL_WITH_OPF": {
+                                                "type": "string"
+                                            },
+                                            "INN": {
+                                                "type": "string"
+                                            },
+                                            "INTERES_K": {
+                                                "type": "string"
+                                            },
+                                            "KANAL_PRIVLECHENIYA": {
+                                                "type": "string"
+                                            },
+                                            "MANAGEMENT_INN": {
+                                                "type": "string"
+                                            },
+                                            "MANAGEMENT_NAME": {
+                                                "type": "string"
+                                            },
+                                            "MANAGEMENT_POST": {
+                                                "type": "string"
+                                            },
+                                            "NAME": {
+                                                "type": "string"
+                                            },
+                                            "NUMBEROFEMPLOYEESRANGE": {
+                                                "type": "string"
+                                            },
+                                            "OGRN": {
+                                                "type": "string"
+                                            },
+                                            "OKVED_ALL": {
+                                                "type": "string"
+                                            },
+                                            "OKVED_MAIN": {
+                                                "type": "string"
+                                            },
+                                            "OKVED_VID_DEYATELNOSTI": {
+                                                "type": "string"
+                                            },
+                                            "OPF_SHORT": {
+                                                "type": "string"
+                                            },
+                                            "RAZMER_PREDPRIYATIYA": {
+                                                "type": "string"
+                                            },
+                                            "RB_HUNTER": {
+                                                "type": "string"
+                                            },
+                                            "RB_MENEDZHER_PRO": {
+                                                "type": "string"
+                                            },
+                                            "RB_MENEDZHER_SCHETA": {
+                                                "type": "string"
+                                            },
+                                            "REGAUTHORITY": {
+                                                "type": "string"
+                                            },
+                                            "REGAUTHORITYADDRESS": {
+                                                "type": "string"
+                                            },
+                                            "SPARK_DATA_ROZHDENIYA_IP": {
+                                                "type": "string"
+                                            },
+                                            "SPARK_VAZHNAYA_INFORMACIYA": {
+                                                "type": "string"
+                                            },
+                                            "VYRUCHKA_PERIOD": {
+                                                "type": "string"
+                                            },
+                                            "VYRUCHKA_ZA_GOD": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка входных данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Отсутствуют обязательные параметры"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+           
+              
+    },
+    "components": {
+        "schemas": {
+            "SubscriptionRef": {
+                "required": [
+                    "company",
+                    "inn",
+                    "organization_id",
+                    "product_card_code",
+                    "state",
+                    "lead"
+                ],
+                "properties": {
+                    "company": {
+                        "description": "Наименование клиента",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "ООО Рога и копыта"
+                    },
+                    "inn": {
+                        "description": "ИНН клиента",
+                        "type": "string",
+                        "maxLength": 12,
+                        "minLength": 12,
+                        "example": "1234567894"
+                    },
+                    "organization_id": {
+                        "description": "ID клиента в Siebel",
+                        "type": "string",
+                        "maxLength": 20,
+                        "example": "1-IE03T2"
+                    },
+                    "product_card_code": {
+                        "description": "Код продукта",
+                        "type": "string",
+                        "maxLength": 20,
+                        "enum": [
+                            "moedelo"
+                        ],
+                        "example": "moedelo"
+                    },
+                    "state": {
+                        "description": "Код статуса лида",
+                        "type": "number",
+                        "enum": [
+                            60
+                        ],
+                        "example": 60
+                    },
+                    "client_full_name": {
+                        "description": "ФИО пользователя РМБ, который направил лид",
+                        "type": "string",
+                        "maxLength": 150,
+                        "example": "Иванов Иван Иванович"
+                    },
+                    "km_uid": {
+                        "description": "ID пользователя, отправившего лид с ПроПортала",
+                        "type": "string",
+                        "example": "10593"
+                    },
+                    "lead": {
+                        "description": "Информация о лиде",
+                        "required": [
+                            "name",
+                            "email",
+                            "phone",
+                            "tariff",
+                            "subscription_start_date"
+                        ],
+                        "properties": {
+                            "name": {
+                                "description": "ФИО контактного лица",
+                                "type": "string",
+                                "maxLength": 150,
+                                "example": "Иванов Иван Иванович"
+                            },
+                            "email": {
+                                "description": "Email контактного лица",
+                                "type": "string",
+                                "maxLength": 100,
+                                "example": "ivan@ivanov.ru"
+                            },
+                            "phone": {
+                                "description": "Телефон контактного лица",
+                                "type": "string",
+                                "maxLength": 20,
+                                "example": "+7 (926) 123-45-67"
+                            },
+                            "tariff": {
+                                "description": "Код тарифа<br/>`ib-economy-package-rosbank` - Пакет Эконом на 1 мес<br/>\r\n`ib-base-package-rosbank` - Пакет Базовый на 1 мес<br/>`ib-premium-package-rosbank` - Пакет Премиум на 1 мес",
+                                "type": "string",
+                                "maxLength": 40,
+                                "enum": [
+                                    "ib-economy-package-rosbank",
+                                    "ib-base-package-rosbank",
+                                    "ib-premium-package-rosbank"
+                                ],
+                                "example": "ib-economy-package-rosbank"
+                            },
+                            "subscription_start_date": {
+                                "description": "Дата начала подписки",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2022-10-28"
+                            },
+                            "request_id": {
+                                "description": "ИД клиента в МД",
+                                "type": "string",
+                                "maxLength": 50,
+                                "example": "894-794-540"
+                            },
+                            "account_id": {
+                                "description": "ИД счета в МД",
+                                "type": "string",
+                                "maxLength": 20,
+                                "example": "10379357"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "SubscriptionResponse2xx": {
+                "description": "Лид принят ProPortal",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "leadId": {
+                                    "description": "ID созданного лида в ProPortal",
+                                    "type": "number",
+                                    "example": 37172
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "SubscriptionResponse400": {
+                "description": "Ошибка валидации данных",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "errors": {
+                                    "properties": {
+                                        "any_field": {
+                                            "description": "Название поля не прошедшего валидацию",
+                                            "type": "string",
+                                            "maxLength": 20,
+                                            "example": "Поле company обязательно для заполнения"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "SubscriptionResponse5xx": {
+                "description": "Страница не найдена",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "description": "Описание ошибки",
+                                    "type": "string",
+                                    "example": "Not Found"
+                                },
+                                "path": {
+                                    "description": "Путь, где возникла ошибка",
+                                    "type": "string",
+                                    "example": "/pro/subscription/"
+                                },
+                                "status": {
+                                    "description": "Код ответа сервера",
+                                    "type": "number",
+                                    "example": 404
+                                },
+                                "timestamp": {
+                                    "description": "Метка времени возникновения ошибки",
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2022-10-28 12:12:30"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "SubscriptionStateResponse200": {
+                "description": "Обновление статуса подписки произошло успешно",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "description": "Факт обновления статуса подписки",
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadRmbResponse201": {
+                "description": "Создание лида на эквайринг",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "lead_id"
+                            ],
+                            "properties": {
+                                "lead_id": {
+                                    "description": "ID созданного лида в системе ProPortal",
+                                    "type": "string",
+                                    "example": "d8d630f8-daff-41eb-95f3-526f5155718a"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadRmbResponse400": {
+                "description": "Ошибка валидации данных",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "errors": {
+                                    "properties": {
+                                        "any_field": {
+                                            "description": "Название поля не прошедшего валидацию",
+                                            "type": "string",
+                                            "maxLength": 20,
+                                            "example": "Поле company обязательно для заполнения"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadRmbResponse5xx": {
+                "description": "Страница не найдена",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "description": "Описание ошибки",
+                                    "type": "string",
+                                    "example": "Not Found"
+                                },
+                                "path": {
+                                    "description": "Путь, где возникла ошибка",
+                                    "type": "string",
+                                    "example": "/pro/subscription/"
+                                },
+                                "status": {
+                                    "description": "Код ответа сервера",
+                                    "type": "number",
+                                    "example": 404
+                                },
+                                "timestamp": {
+                                    "description": "Метка времени возникновения ошибки",
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2022-10-28 12:12:30"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadStateRmbResponse200": {
+                "description": "Обновление информации о статусе заявке",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "success"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "description": "Флаг обновления статуса заявки",
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Activity",
+            "description": "Активности"
+        },
+        {
+            "name": "OnboardingKrmApp",
+            "description": "КРМ заявка онбординга"
+        },
+        {
+            "name": "Payroll",
+            "description": "Payroll"
+        },
+        {
+            "name": "Prospect",
+            "description": "Проспекты"
+        },
+        {
+            "name": "SiebelPass",
+            "description": "Получение информации из Siebel CRM"
+        },
+        {
+            "name": "Subscription",
+            "description": "Получение информации по подписке в РМБ"
+        },
+        {
+            "name": "AcquiringUCS",
+            "description": "Получение информации по подключению эквайринга из РМБ"
+        }
+    ]
+}
