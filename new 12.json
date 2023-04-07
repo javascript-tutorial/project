@@ -1,0 +1,1732 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ProPortal API",
+        "description": "ProPortal API",
+        "contact": {
+            "name": "Sergey Pechenyuk",
+            "email": "sergey.pechenyuk@rosbank.ru"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://testproportal.testproportal.trosbank.trus.tsocgen/",
+            "description": "Sandbox"
+        },
+        {
+            "url": "https://proportal.rosbank.rus.socgen/",
+            "description": "Production"
+        }
+    ],
+    "paths": {
+        "/pro/branch/autocomplete/city_and_to": {
+            "get": {
+                "tags": [
+                    "Branch"
+                ],
+                "summary": "Поиск города и ТО",
+                "description": "Ищет уникальные пары ТО + город по отделениям банка.",
+                "operationId": "11c111a53e8befed09936296cf563fba",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Название города (можно часть названия)",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Мос"
+                    },
+                    {
+                        "name": "groupType",
+                        "in": "query",
+                        "description": "В каких типах ТО искать город (ТО, ГО и т.д.) Если не задан, ищет по всем ТО",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ТО"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Результаты поиска",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "description": "Поисковый запрос",
+                                            "type": "string",
+                                            "example": "Мос"
+                                        },
+                                        "suggestions": {
+                                            "type": "array",
+                                            "items": {
+                                                "property": null,
+                                                "description": "Результаты поиска",
+                                                "properties": {
+                                                    "value": {
+                                                        "description": "Найденное значение в формате ТО - Город",
+                                                        "type": "string",
+                                                        "example": "ТО Север - Москва"
+                                                    },
+                                                    "terofis": {
+                                                        "description": "ТО",
+                                                        "type": "string",
+                                                        "example": "ТО Север"
+                                                    },
+                                                    "city": {
+                                                        "description": "Город",
+                                                        "type": "string",
+                                                        "example": "Москва"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле \"query\" должно содержать не меньше 2 символов"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pro/crm/{id}/activity": {
+            "post": {
+                "tags": [
+                    "Activity"
+                ],
+                "summary": "Добавление активности в проспект через API",
+                "description": "Создаёт новую активность с заполненными полями.\n                    Успешная активность или неуспешная зависит от статуса.",
+                "operationId": "85120b9b10d9fb8eedc6a2d99fce0019",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID проспекта в ProPortal",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "uid",
+                                    "status_id",
+                                    "fields"
+                                ],
+                                "properties": {
+                                    "uid": {
+                                        "description": "ID пользователя на пропортале",
+                                        "type": "number",
+                                        "example": 32165
+                                    },
+                                    "status_id": {
+                                        "description": "ID статуса активности<table>\n                            <tr><th>id</th><th>item_name</th></tr>\n                            <tr><td>1240</td><td>Финансовая грамотность</td></tr>\n                            <tr><td>1241</td><td>Презентация</td></tr>\n                            <tr><td>1242</td><td>Банковский день</td></tr>\n                            <tr><td>1243</td><td>Покабинетная презентация </td></tr>\n                            <tr><td>1244</td><td>Массовая выдача ЗП карт</td></tr>\n                            <tr><td>1245</td><td>Индивидуальная встреча с ФЛ</td></tr>\n                            </table>",
+                                        "type": "number",
+                                        "enum": [
+                                            1240,
+                                            1241,
+                                            1242,
+                                            1243,
+                                            1244,
+                                            1245
+                                        ],
+                                        "example": 1241
+                                    },
+                                    "fields": {
+                                        "description": "Значения полей",
+                                        "required": [
+                                            "121",
+                                            "114",
+                                            "115",
+                                            "116",
+                                            "117",
+                                            "118",
+                                            "119",
+                                            "120",
+                                            "122"
+                                        ],
+                                        "properties": {
+                                            "121": {
+                                                "description": "Кол-во сотрудников, присутствующих на встрече",
+                                                "type": "number",
+                                                "example": 53
+                                            },
+                                            "114": {
+                                                "description": "Кредитная карта (кол-во)",
+                                                "type": "number",
+                                                "example": 5
+                                            },
+                                            "115": {
+                                                "description": "Кредит наличными/Рефинансирование (кол-во)",
+                                                "type": "number",
+                                                "example": 3
+                                            },
+                                            "116": {
+                                                "description": "Ипотека (кол-во)",
+                                                "type": "number",
+                                                "example": 4
+                                            },
+                                            "117": {
+                                                "description": "ПБУ Новый (кол-во)",
+                                                "type": "number",
+                                                "example": 35
+                                            },
+                                            "118": {
+                                                "description": "ПБУ перепакет (кол-во)",
+                                                "type": "number",
+                                                "example": 13
+                                            },
+                                            "119": {
+                                                "description": "Кол-во ЛОСов",
+                                                "type": "number",
+                                                "example": 10
+                                            },
+                                            "120": {
+                                                "description": "Коробочное страхование (кол-во)",
+                                                "type": "number",
+                                                "example": 0
+                                            },
+                                            "122": {
+                                                "description": "Выданные карты (кол-во)",
+                                                "type": "number",
+                                                "example": 24
+                                            },
+                                            "2": {
+                                                "description": "Комментарий",
+                                                "type": "number",
+                                                "example": "Встреча проведена успешно"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "start_time": {
+                                        "description": "Время старта активности в формате 'Y-m-d H:i:sP'",
+                                        "type": "string",
+                                        "example": "2022-11-28 09:00:00+03:00"
+                                    },
+                                    "end_time": {
+                                        "description": "Время окончания активности в формате 'Y-m-d H:i:sP'",
+                                        "type": "string",
+                                        "example": "2022-11-28 10:30:00+03:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Активность успешно добавлена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "activity_id": {
+                                            "description": "ID созданной активности в ProPortal",
+                                            "type": "number",
+                                            "example": 11645920
+                                        },
+                                        "success": {
+                                            "description": "Статус запроса",
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "properties": {
+                                                "any_field": {
+                                                    "description": "Название поля не прошедшего валидацию",
+                                                    "type": "string",
+                                                    "example": "Поле any_field обязательно для заполнения"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Не найден проспект клиента",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Проспект не существует"
+                                        },
+                                        "success": {
+                                            "description": "Статус запроса",
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Не удалось создать активность",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Ошика при попытке сохранения активности"
+                                        },
+                                        "path": {
+                                            "description": "Ссылка, которую вызывали",
+                                            "type": "string",
+                                            "example": "/pro/crm/38285/activity"
+                                        },
+                                        "status": {
+                                            "description": "Код ошибки",
+                                            "type": "number",
+                                            "example": 500
+                                        },
+                                        "timestamp": {
+                                            "description": "Время",
+                                            "type": "string",
+                                            "example": "2022-11-30 12:25:04"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pro/onboarding/getConciergesCheckers": {
+            "get": {
+                "tags": [
+                    "OnboardingKrmApp"
+                ],
+                "summary": "Поиск Чекеров по заявке для клиента",
+                "description": "Возвращает сотрудников с ролью 200 с навыком Чекер и данные по заявке",
+                "operationId": "6c57d055a74b58a531ebf049efecb825",
+                "parameters": [
+                    {
+                        "name": "inn",
+                        "in": "query",
+                        "description": "ИНН клиента",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "0275071662"
+                    },
+                    {
+                        "name": "ogrn",
+                        "in": "query",
+                        "description": "ОГРН клиента",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "310774618700642"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Запрос отработал успешно и вернул результат",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": {
+                                                "language_independent_code": "KM Visit",
+                                                "tariff": "Один за всех и все на одного",
+                                                "payment_period": "Раз в месяц",
+                                                "checkers": [
+                                                    {
+                                                        "rb": "rb101010",
+                                                        "fio": "фамилия имя отчество",
+                                                        "surname": "фамилия",
+                                                        "name": "имя",
+                                                        "patronymic": "отчество",
+                                                        "birth_date": "01.01.1971",
+                                                        "doc_series": "1234",
+                                                        "doc_number": "567890",
+                                                        "doc_date_issue": "01.01.2012",
+                                                        "department_code": "123-456"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": ""
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Не заполнено ИНН"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка во время выполнения запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Не найдена заявка для этого клиента"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pro/payroll/fields/{fieldName}": {
+            "get": {
+                "tags": [
+                    "Payroll"
+                ],
+                "summary": "Получение значения доп. поля по ИНН",
+                "description": "Ищет значение доп. поля по ИНН.",
+                "operationId": "792010dd2944229e6fa9171b658cae63",
+                "parameters": [
+                    {
+                        "name": "fieldName",
+                        "in": "path",
+                        "description": "Параметр",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "courier_delivery"
+                    },
+                    {
+                        "name": "inn",
+                        "in": "query",
+                        "description": "ИНН клиента",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "0275071662"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Доп. поле найдено, значение получено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "courier_delivery": {
+                                            "description": "Значение признака",
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле 'inn' заполненно некорректно"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ИНН не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Проспект не существует"
+                                        },
+                                        "success": {
+                                            "description": "Статус запроса",
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка во время выполнения запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Ошибка во время выполнения запроса"
+                                        },
+                                        "path": {
+                                            "description": "Ссылка, которую вызывали",
+                                            "type": "string",
+                                            "example": "/pro/payroll/fields/courier_delivery"
+                                        },
+                                        "status": {
+                                            "description": "Код ошибки",
+                                            "type": "number",
+                                            "example": 500
+                                        },
+                                        "timestamp": {
+                                            "description": "Время",
+                                            "type": "string",
+                                            "example": "2022-11-30 12:25:04"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pro/api/prospect": {
+            "get": {
+                "tags": [
+                    "Prospect"
+                ],
+                "summary": "Поиск клиентов",
+                "description": "Поиск клиентов",
+                "operationId": "3409e792a42c2b15306284147d9bdbc3",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "query",
+                        "description": "ID проспекта в портале",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "5461154"
+                    },
+                    {
+                        "name": "fclient",
+                        "in": "query",
+                        "description": "BisBranch + BisId",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "R19001002"
+                    },
+                    {
+                        "name": "inn",
+                        "in": "query",
+                        "description": "ИНН",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1234567894"
+                    },
+                    {
+                        "name": "ogrn",
+                        "in": "query",
+                        "description": "ОГРН",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "1234567890123"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Результаты поиска",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "clientId": {
+                                            "type": "number"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "inn": {
+                                            "type": "string"
+                                        },
+                                        "ogrn": {
+                                            "type": "string"
+                                        },
+                                        "fclient": {
+                                            "type": "string"
+                                        },
+                                        "opf": {
+                                            "type": "string"
+                                        },
+                                        "dateRegYmd": {
+                                            "type": "number"
+                                        },
+                                        "managementName": {
+                                            "type": "string"
+                                        },
+                                        "managementPost": {
+                                            "type": "string"
+                                        },
+                                        "managementInn": {
+                                            "type": "string"
+                                        },
+                                        "contactPhonesArray": {
+                                            "properties": {
+                                                "phone": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                "fax": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "contactEmail": {
+                                            "type": "string"
+                                        },
+                                        "contactWebsite": {
+                                            "type": "string"
+                                        },
+                                        "okvedMain": {
+                                            "type": "string"
+                                        },
+                                        "okvedAll": {
+                                            "type": "array",
+                                            "items": {}
+                                        },
+                                        "okvedKindOfActivity": {
+                                            "type": "string"
+                                        },
+                                        "addressReg": {
+                                            "type": "string"
+                                        },
+                                        "addressFact": {
+                                            "type": "string"
+                                        },
+                                        "addressPost": {
+                                            "type": "string"
+                                        },
+                                        "codeSpark": {
+                                            "type": "string"
+                                        },
+                                        "codeKpp": {
+                                            "type": "string"
+                                        },
+                                        "codeOkpo": {
+                                            "type": "string"
+                                        },
+                                        "codeOkopf": {
+                                            "type": "string"
+                                        },
+                                        "codeOktmo": {
+                                            "type": "string"
+                                        },
+                                        "codeOkfs": {
+                                            "type": "string"
+                                        },
+                                        "codeOkogu": {
+                                            "type": "string"
+                                        },
+                                        "codeOkato": {
+                                            "type": "string"
+                                        },
+                                        "sparkImportantInformation": {
+                                            "type": "string"
+                                        },
+                                        "sparkBirthdayIp": {
+                                            "type": "string"
+                                        },
+                                        "revenuePeriod": {
+                                            "type": "string"
+                                        },
+                                        "revenueYear": {
+                                            "type": "string"
+                                        },
+                                        "companySize": {
+                                            "type": "string"
+                                        },
+                                        "companySizeRange": {
+                                            "type": "string"
+                                        },
+                                        "channelOnboarding": {
+                                            "type": "string"
+                                        },
+                                        "firstCallDate": {
+                                            "type": "number"
+                                        },
+                                        "firstMeetingDate": {
+                                            "type": "number"
+                                        },
+                                        "currentBank": {
+                                            "type": "string"
+                                        },
+                                        "interesK": {
+                                            "type": "string"
+                                        },
+                                        "fullWithOpf": {
+                                            "type": "string"
+                                        },
+                                        "regAuthority": {
+                                            "type": "string"
+                                        },
+                                        "regAuthorityAddress": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка входных данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Отсутствуют обязательные параметры"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pro/crm/find": {
+            "get": {
+                "tags": [
+                    "Prospect"
+                ],
+                "summary": "Поиск проспекта по ИНН",
+                "description": "Ищет проспект по ИНН. Если такого проспекта не существует, создаёт новый проспект.",
+                "operationId": "ef11e95ca7609c5d80384417a41f7658",
+                "parameters": [
+                    {
+                        "name": "inn",
+                        "in": "query",
+                        "description": "ИНН клиента",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "0275071662"
+                    },
+                    {
+                        "name": "create_if_not_exists",
+                        "in": "query",
+                        "description": "Создать проспект, если не существует",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "number",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Проспект найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "client_id": {
+                                            "description": "ID проспекта в ProPortal",
+                                            "type": "number",
+                                            "example": 3414288
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Поле 'inn' заполненно некорректно; Поле 'create_if_not_exists' заполненно некорректно"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Проспект не найден (если create_if_not_exists=0)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Проспект не существует"
+                                        },
+                                        "success": {
+                                            "description": "Статус запроса",
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка во время выполнения запроса",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Текст ошибки",
+                                            "type": "string",
+                                            "example": "Ошибка во время выполнения запроса"
+                                        },
+                                        "path": {
+                                            "description": "Ссылка, которую вызывали",
+                                            "type": "string",
+                                            "example": "/pro/crm/38285/activity"
+                                        },
+                                        "status": {
+                                            "description": "Код ошибки",
+                                            "type": "number",
+                                            "example": 500
+                                        },
+                                        "timestamp": {
+                                            "description": "Время",
+                                            "type": "string",
+                                            "example": "2022-11-30 12:25:04"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pro/subscription": {
+            "post": {
+                "tags": [
+                    "Subscription"
+                ],
+                "summary": "Добавление информации по подписке, пришедшей из РМБ",
+                "description": "Добавление информации о лиде",
+                "operationId": "7bfebf514bbb016bc62bd692d1e972da",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscriptionRef"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/SubscriptionResponse2xx"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SubscriptionResponse400"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/SubscriptionResponse5xx"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/SubscriptionResponse5xx"
+                    }
+                }
+            }
+        },
+        "/pro/subscription/{id}": {
+            "post": {
+                "tags": [
+                    "Subscription"
+                ],
+                "summary": "Обновление информации по подписке, ранее переданной из РМБ",
+                "description": "Добавление информации о лиде",
+                "operationId": "a665888f52737db7ba9d311ee8c94f8a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID лида в ProPortal",
+                        "required": true,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscriptionRef"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/SubscriptionResponse2xx"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SubscriptionResponse400"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/SubscriptionResponse5xx"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/SubscriptionResponse5xx"
+                    }
+                }
+            }
+        },
+        "/pro/subscription/{id}/state": {
+            "post": {
+                "tags": [
+                    "Subscription"
+                ],
+                "summary": "Изменении статуса по подписке",
+                "description": "Изменение статуса по подписке",
+                "operationId": "ffb05c3ed308d1e7bf28cb4e0aa61f51",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID лида в ProPortal",
+                        "required": true,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "state"
+                                ],
+                                "properties": {
+                                    "state": {
+                                        "description": "Код статуса лида<br/>`50` Отказ<br/>`70` Клиент подписал ДП<br/>\n`80` Со счёта клиента списаны денежные средства<br/>",
+                                        "type": "number",
+                                        "enum": [
+                                            50,
+                                            70,
+                                            80
+                                        ],
+                                        "example": 60
+                                    },
+                                    "cost": {
+                                        "description": "Сумма платежа<br/><small>Обязательно для заполнения, если state = 80</small>",
+                                        "type": "number",
+                                        "format": "double",
+                                        "example": 1000.3
+                                    },
+                                    "next_payment_date": {
+                                        "description": "Дата следующего платежа<br/>\n<small>Обязательно для заполнения, если state = 80</small>",
+                                        "type": "string",
+                                        "example": "2022-12-23"
+                                    },
+                                    "payment_date": {
+                                        "description": "Дата и время оплаты<br/>\n<small>Обязательно для заполнения, если state = 80</small>",
+                                        "type": "string",
+                                        "example": "2022-10-29 10:50:33"
+                                    },
+                                    "denial_reason": {
+                                        "description": "Причина отказа<br/><small>Обязательно для заполнения, если state = 50</small>",
+                                        "type": "string",
+                                        "maxLength": 1024,
+                                        "example": "Отказ пользователя в ЛК РМБ"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/SubscriptionStateResponse200"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SubscriptionResponse400"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/SubscriptionResponse5xx"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/SubscriptionResponse5xx"
+                    }
+                }
+            }
+        },
+        "/pro/acquiring/ucs": {
+            "post": {
+                "tags": [
+                    "AcquiringUCS"
+                ],
+                "summary": "Получение запроса на подключение экваринга",
+                "description": "Получение запроса на подключение экваринга",
+                "operationId": "6860a8b3c78080b042d80ea179e121c0",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "crm_id",
+                                    "account_number",
+                                    "merchant"
+                                ],
+                                "properties": {
+                                    "crm_id": {
+                                        "description": "Ид клиента в CRM",
+                                        "type": "string",
+                                        "maxLength": 20,
+                                        "example": "1-K0D1OVG"
+                                    },
+                                    "account_number": {
+                                        "description": "Р/счет подключения, используемый для получения от Банка сумм возмещения и совершения иных операций",
+                                        "type": "string",
+                                        "maxLength": 20,
+                                        "example": "45812810696430001335"
+                                    },
+                                    "merchant": {
+                                        "description": "Данные организации",
+                                        "required": [
+                                            "name",
+                                            "inn",
+                                            "ogrn",
+                                            "registration_address"
+                                        ],
+                                        "properties": {
+                                            "name": {
+                                                "description": "Наименование организации",
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "ООО Рога и копыта"
+                                            },
+                                            "inn": {
+                                                "description": "ИНН организации",
+                                                "type": "string",
+                                                "maxLength": 12,
+                                                "example": "1234567894"
+                                            },
+                                            "ogrn": {
+                                                "description": "ОГРН/ОГРНИП организации",
+                                                "type": "string",
+                                                "maxLength": 15,
+                                                "example": "1234567890123"
+                                            },
+                                            "registration_address": {
+                                                "description": "Строчное представление юридического адреса организации, нормализованное через DaData",
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Москва, ул. Машиы Порываевой, д. 34"
+                                            },
+                                            "tariff_type": {
+                                                "description": "Тип тарифа<br/>`A` - Бизнес старт (ранее 1%)<br/>`B` - Доступный старт\n    <br/>`C` - Ничего лишнего<br/>`D` - Серьезный подход<br/>`E` - Широкие возможности<br/>`F` - Максимальные возможности\n    <br/>`G` - Без пакета",
+                                                "type": "string",
+                                                "enum": [
+                                                    "A",
+                                                    "B",
+                                                    "C",
+                                                    "D",
+                                                    "E",
+                                                    "F",
+                                                    "G"
+                                                ],
+                                                "example": "A"
+                                            },
+                                            "director": {
+                                                "description": "Данные руководителя",
+                                                "required": [
+                                                    "surname",
+                                                    "name",
+                                                    "phone_number"
+                                                ],
+                                                "properties": {
+                                                    "surname": {
+                                                        "description": "Фамилия",
+                                                        "type": "string",
+                                                        "maxLength": 50,
+                                                        "example": "Иванов"
+                                                    },
+                                                    "name": {
+                                                        "description": "Имя",
+                                                        "type": "string",
+                                                        "maxLength": 50,
+                                                        "example": "Иван"
+                                                    },
+                                                    "patronymic": {
+                                                        "description": "Отчество",
+                                                        "type": "string",
+                                                        "maxLength": 50,
+                                                        "example": "Иванович"
+                                                    },
+                                                    "birthdate": {
+                                                        "description": "Дата рождения",
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "2000-10-28"
+                                                    },
+                                                    "phone_number": {
+                                                        "description": "Номер телефона",
+                                                        "type": "string",
+                                                        "maxLength": 20,
+                                                        "example": "79261234567"
+                                                    },
+                                                    "email": {
+                                                        "description": "Адрес эл. почты",
+                                                        "type": "string",
+                                                        "maxLength": 50,
+                                                        "example": "ivan@ivanov.ru"
+                                                    },
+                                                    "country_of_residence": {
+                                                        "description": "Страна прописки",
+                                                        "type": "string",
+                                                        "maxLength": 50,
+                                                        "enum": [
+                                                            "РОССИЯ"
+                                                        ],
+                                                        "example": "РОССИЯ"
+                                                    },
+                                                    "passport": {
+                                                        "description": "Данные паспорта руководителя",
+                                                        "properties": {
+                                                            "issuer": {
+                                                                "description": "Кем выдан паспорт",
+                                                                "type": "string",
+                                                                "maxLength": 255,
+                                                                "example": "УВД г. Москва"
+                                                            },
+                                                            "date": {
+                                                                "description": "Дата выдачи паспорта",
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "example": "2022-01-25"
+                                                            },
+                                                            "number": {
+                                                                "description": "Серия и номер паспорта",
+                                                                "type": "string",
+                                                                "maxLength": 50,
+                                                                "example": "1122334455"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/AcquiringUcsLeadRmbResponse201"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/AcquiringUcsLeadRmbResponse400"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/AcquiringUcsLeadRmbResponse5xx"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/AcquiringUcsLeadRmbResponse5xx"
+                    }
+                }
+            }
+        },
+        "/pro/acquiring/ucs/{uuid}/state": {
+            "post": {
+                "tags": [
+                    "AcquiringUCS"
+                ],
+                "summary": "Обновление статуса лида",
+                "description": "Обновление статуса лида",
+                "operationId": "9a83f9b1ce4e477ead6caafed9af82c2",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "ID лида в ProPortal (формат UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "state"
+                                ],
+                                "properties": {
+                                    "state": {
+                                        "description": "Статус",
+                                        "type": "string",
+                                        "enum": [
+                                            "OFFER_SIGNED"
+                                        ],
+                                        "example": "OFFER_SIGNED"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/AcquiringUcsLeadStateRmbResponse200"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "SubscriptionRef": {
+                "required": [
+                    "company",
+                    "inn",
+                    "organization_id",
+                    "product_card_code",
+                    "state",
+                    "lead"
+                ],
+                "properties": {
+                    "company": {
+                        "description": "Наименование клиента",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "ООО Рога и копыта"
+                    },
+                    "inn": {
+                        "description": "ИНН клиента",
+                        "type": "string",
+                        "maxLength": 12,
+                        "minLength": 12,
+                        "example": "1234567894"
+                    },
+                    "organization_id": {
+                        "description": "ID клиента в Siebel",
+                        "type": "string",
+                        "maxLength": 20,
+                        "example": "1-IE03T2"
+                    },
+                    "product_card_code": {
+                        "description": "Код продукта",
+                        "type": "string",
+                        "maxLength": 20,
+                        "enum": [
+                            "moedelo"
+                        ],
+                        "example": "moedelo"
+                    },
+                    "state": {
+                        "description": "Код статуса лида",
+                        "type": "number",
+                        "enum": [
+                            60
+                        ],
+                        "example": 60
+                    },
+                    "client_full_name": {
+                        "description": "ФИО пользователя РМБ, который направил лид",
+                        "type": "string",
+                        "maxLength": 150,
+                        "example": "Иванов Иван Иванович"
+                    },
+                    "km_uid": {
+                        "description": "ID пользователя, отправившего лид с ПроПортала",
+                        "type": "string",
+                        "example": "10593"
+                    },
+                    "lead": {
+                        "description": "Информация о лиде",
+                        "required": [
+                            "name",
+                            "email",
+                            "phone",
+                            "tariff",
+                            "subscription_start_date"
+                        ],
+                        "properties": {
+                            "name": {
+                                "description": "ФИО контактного лица",
+                                "type": "string",
+                                "maxLength": 150,
+                                "example": "Иванов Иван Иванович"
+                            },
+                            "email": {
+                                "description": "Email контактного лица",
+                                "type": "string",
+                                "maxLength": 100,
+                                "example": "ivan@ivanov.ru"
+                            },
+                            "phone": {
+                                "description": "Телефон контактного лица",
+                                "type": "string",
+                                "maxLength": 20,
+                                "example": "+7 (926) 123-45-67"
+                            },
+                            "tariff": {
+                                "description": "Код тарифа<br/>`ib-economy-package-rosbank` - Пакет Эконом на 1 мес<br/>\n`ib-base-package-rosbank` - Пакет Базовый на 1 мес<br/>`ib-premium-package-rosbank` - Пакет Премиум на 1 мес",
+                                "type": "string",
+                                "maxLength": 40,
+                                "enum": [
+                                    "ib-economy-package-rosbank",
+                                    "ib-base-package-rosbank",
+                                    "ib-premium-package-rosbank"
+                                ],
+                                "example": "ib-economy-package-rosbank"
+                            },
+                            "subscription_start_date": {
+                                "description": "Дата начала подписки",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2022-10-28"
+                            },
+                            "request_id": {
+                                "description": "ИД клиента в МД",
+                                "type": "string",
+                                "maxLength": 50,
+                                "example": "894-794-540"
+                            },
+                            "account_id": {
+                                "description": "ИД счета в МД",
+                                "type": "string",
+                                "maxLength": 20,
+                                "example": "10379357"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "SubscriptionResponse2xx": {
+                "description": "Лид принят ProPortal",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "leadId": {
+                                    "description": "ID созданного лида в ProPortal",
+                                    "type": "number",
+                                    "example": 37172
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "SubscriptionResponse400": {
+                "description": "Ошибка валидации данных",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "errors": {
+                                    "properties": {
+                                        "any_field": {
+                                            "description": "Название поля не прошедшего валидацию",
+                                            "type": "string",
+                                            "maxLength": 20,
+                                            "example": "Поле company обязательно для заполнения"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "SubscriptionResponse5xx": {
+                "description": "Страница не найдена",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "description": "Описание ошибки",
+                                    "type": "string",
+                                    "example": "Not Found"
+                                },
+                                "path": {
+                                    "description": "Путь, где возникла ошибка",
+                                    "type": "string",
+                                    "example": "/pro/subscription/"
+                                },
+                                "status": {
+                                    "description": "Код ответа сервера",
+                                    "type": "number",
+                                    "example": 404
+                                },
+                                "timestamp": {
+                                    "description": "Метка времени возникновения ошибки",
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2022-10-28 12:12:30"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "SubscriptionStateResponse200": {
+                "description": "Обновление статуса подписки произошло успешно",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "description": "Факт обновления статуса подписки",
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadRmbResponse201": {
+                "description": "Создание лида на эквайринг",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "lead_id"
+                            ],
+                            "properties": {
+                                "lead_id": {
+                                    "description": "ID созданного лида в системе ProPortal",
+                                    "type": "string",
+                                    "example": "d8d630f8-daff-41eb-95f3-526f5155718a"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadRmbResponse400": {
+                "description": "Ошибка валидации данных",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "errors": {
+                                    "properties": {
+                                        "any_field": {
+                                            "description": "Название поля не прошедшего валидацию",
+                                            "type": "string",
+                                            "maxLength": 20,
+                                            "example": "Поле company обязательно для заполнения"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadRmbResponse5xx": {
+                "description": "Страница не найдена",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "description": "Описание ошибки",
+                                    "type": "string",
+                                    "example": "Not Found"
+                                },
+                                "path": {
+                                    "description": "Путь, где возникла ошибка",
+                                    "type": "string",
+                                    "example": "/pro/subscription/"
+                                },
+                                "status": {
+                                    "description": "Код ответа сервера",
+                                    "type": "number",
+                                    "example": 404
+                                },
+                                "timestamp": {
+                                    "description": "Метка времени возникновения ошибки",
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2022-10-28 12:12:30"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "AcquiringUcsLeadStateRmbResponse200": {
+                "description": "Обновление информации о статусе заявке",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "success"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "description": "Флаг обновления статуса заявки",
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Activity",
+            "description": "Активности"
+        },
+        {
+            "name": "OnboardingKrmApp",
+            "description": "КРМ заявка онбординга"
+        },
+        {
+            "name": "Payroll",
+            "description": "Payroll"
+        },
+        {
+            "name": "Prospect",
+            "description": "Проспекты"
+        },
+        {
+            "name": "SiebelPass",
+            "description": "Получение информации из Siebel CRM"
+        },
+        {
+            "name": "Subscription",
+            "description": "Получение информации по подписке в РМБ"
+        },
+        {
+            "name": "AcquiringUCS",
+            "description": "Получение информации по подключению эквайринга из РМБ"
+        }
+    ]
+}
